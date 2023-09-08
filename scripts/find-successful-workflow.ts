@@ -137,6 +137,7 @@ function findMergeQueuePr(mainBranchName) {
   process.stdout.write('\nmainBranchName: ' + mainBranchName + '\n');
   process.stdout.write('\mMERGE GROUP: ' + head_ref + '\n');
   const result = new RegExp(`^refs/heads/gh-readonly-queue/${mainBranchName}/pr-(\\d+)-${base_sha}$`).exec(head_ref);
+  console.log(result);
   return result ? result.at(1) : undefined;
 }
 
