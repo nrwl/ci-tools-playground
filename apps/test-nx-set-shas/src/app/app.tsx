@@ -7,7 +7,7 @@ export function App() {
   return (
     <div>
       <NxWelcome title="test-nx-set-shas" />
-      Making change
+      Making change again
     </div>
   );
 }
