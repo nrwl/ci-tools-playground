@@ -1,10 +1,10 @@
-name: 'Test'
+name: 'Merge'
 
 on:
-  pull_request:
+  merge_group:
 
 jobs:
-  check:
+  validate-pr:
     name: Check all
     runs-on: ubuntu-latest
     permissions:
