@@ -1,0 +1,33 @@
+name: 'Test'
+
+on:
+  merge_group:
+  push:
+    branches-ignore:
+      # No need to test on main, since we have a merge queue.
+      - main
+      - gh-readonly-queue/main/*
+
+jobs:
+  check:
+    name: Check all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          fetch-depth: 0
+
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: ${{ inputs.main-branch-name }}
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
