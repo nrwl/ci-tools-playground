@@ -33,7 +33,7 @@ let BASE_SHA;
     eventName == 'merge_group'
   ) {
     try {
-      const mergeBaseRef = await findMergeBaseRef(mainBranchName);
+      const mergeBaseRef = await findMergeBaseRef();
       const baseResult = spawnSync('git', ['merge-base', `origin/${mainBranchName}`, mergeBaseRef], { encoding: 'utf-8' });
       BASE_SHA = baseResult.stdout;
     } catch (e) {
@@ -123,16 +123,16 @@ async function findSuccessfulCommit(workflow_id, run_id, owner, repo, branch, la
   return await findExistingCommit(shas);
 }
 
-async function findMergeBaseRef(mainBranchName) {
+async function findMergeBaseRef() {
   if (eventName == 'merge_group') {
-    const mergeQueueBranch = await findMergeQueueBranch(mainBranchName);
+    const mergeQueueBranch = await findMergeQueueBranch();
     return `origin/${mergeQueueBranch}`;
   } else {
     return 'HEAD'
   }
 }
 
-function findMergeQueuePr(mainBranchName) {
+function findMergeQueuePr() {
   const { head_ref, base_sha } = github.context.payload.merge_group;
   process.stdout.write('\nmainBranchName: ' + mainBranchName + '\n');
   process.stdout.write('\mMERGE GROUP: ' + head_ref + '\n');
@@ -141,8 +141,8 @@ function findMergeQueuePr(mainBranchName) {
   return result ? result.at(1) : undefined;
 }
 
-async function findMergeQueueBranch(mainBranchName) {
-  const pull_number = findMergeQueuePr(mainBranchName);
+async function findMergeQueueBranch() {
+  const pull_number = findMergeQueuePr();
   if (!pull_number) {
     throw new Error('Failed to determine PR number')
   }
