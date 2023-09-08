@@ -1,12 +1,9 @@
 name: 'Test'
 
 on:
+  pull_request:
+  # merge group is added here
   merge_group:
-  push:
-    branches-ignore:
-      # No need to test on main, since we have a merge queue.
-      - main
-      - gh-readonly-queue/main/*
 
 jobs:
   check:
