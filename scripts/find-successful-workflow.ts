@@ -134,8 +134,6 @@ async function findMergeBaseRef() {
 
 function findMergeQueuePr() {
   const { head_ref, base_sha } = github.context.payload.merge_group;
-  process.stdout.write('\nmainBranchName: ' + mainBranchName + '\n');
-  process.stdout.write('\mMERGE GROUP: ' + head_ref + '\n');
   const result = new RegExp(`^refs/heads/gh-readonly-queue/${mainBranchName}/pr-(\\d+)-${base_sha}$`).exec(head_ref);
   console.log(result);
   return result ? result.at(1) : undefined;
@@ -149,7 +147,7 @@ async function findMergeQueueBranch() {
   process.stdout.write('\n');
   process.stdout.write(`Found PR #${pull_number} from merge queue branch\n`);
   const octokit = new Octokit();
-  const result = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', { owner, repo, pull_number: +pull_number });
+  const result = await octokit.request(`GET /repos/${owner}/${repo}/pulls/${pull_number}`, { owner, repo, pull_number: +pull_number });
   return result.data.head.ref;
 }
 
