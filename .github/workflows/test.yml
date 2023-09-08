@@ -27,8 +27,6 @@ jobs:
 
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: ./
-        with:
-          main-branch-name: ${{ inputs.main-branch-name }}
 
       - run: |
           echo "BASE: ${{ env.NX_BASE }}"
